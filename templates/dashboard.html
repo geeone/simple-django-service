@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+
+{% block app_container %}
+	<div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/campaigns">Campaigns</a></li>
+            <li><a href="/settings">Settings</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">Welcome, {{ user_info.user }}</h1>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <tbody>
+                <tr>
+                  <td>total domains: {{ total_domains }}</td>
+                  <td>rotator status: {% if user_info.rotator_running %}running{% else %}stopped{% endif %}</td>
+                </tr>
+                <tr>
+                  <td>total campaigns: {{ total_campaigns }}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>total servers: {{ total_servers }}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+{% block navbar_collapse %}
+<li><a href="/login">Logout ({{ user_info.user }})</a></li>
+{% endblock %}

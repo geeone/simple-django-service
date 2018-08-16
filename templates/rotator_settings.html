@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+
+{% block app_container %}
+	<div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/campaigns">Campaigns</a></li>
+            <li class="active"><a href="/settings">Settings</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">Settings</h1>
+          <a href="/settings/rotator/" class="btn btn-link" disabled="disabled" role="button">Rotator settings</a>
+		  <a href="/settings/party_keys/" class="btn btn-link" role="button">3rd party keys</a>
+		  <form action="/campaigns/{{ current_campaign.pk }}/save_domain/" method="POST">{% csrf_token %}
+	          <div class="table-responsive">
+	            <table class="table table-striped">
+	              <tbody>
+	                <tr>
+	                  <td>auto rotate?</td>
+	                  <td>
+	                  	<input type="checkbox" name="is_auto_rotate" value="1" {% if user_info.is_auto_rotate %}checked{% endif %}>
+	                  </td>
+	                </tr>
+	                <tr>
+	                  <td>minutes before rotate</td>
+	                  <td>
+	                  	<input type="number" min="0" name="auto_rotate_minutes" size="20" value="{{ user_info.auto_rotate_minutes }}" required>
+	                  </td>
+	                </tr>
+	              </tbody>
+	            </table>
+	          </div>
+	          <button class="btn btn-primary" type="submit">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+{% block navbar_collapse %}
+<li><a href="/login">Logout ({{ user_info.user }})</a></li>
+{% endblock %}

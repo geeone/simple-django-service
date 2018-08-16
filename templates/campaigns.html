@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+
+{% block app_container %}
+	<div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li class="active"><a href="/campaigns">Campaigns</a></li>
+            <li><a href="/settings">Settings</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">Campaigns</h1>
+          {% if campaigns %}
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>name</th>
+                  <th>status</th>
+                  <th>domains</th>
+                  <th>actions</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for cp in campaigns %}
+                <tr>
+                  <td><a href="/campaigns/{{ cp.id }}">{{ cp.name }}</a></td>
+                  <td>{% if cp.is_active %}active{% else %}paused{% endif %}</td>
+                  <td>{{ cp.domains_count }}</td>
+                  <td>
+                  	{% if cp.is_active %}
+                  	<a href="/campaigns/{{ cp.id }}/pause/" class="btn btn-link" role="button">pause</a>
+                  	{% else %}
+                  	<a href="/campaigns/{{ cp.id }}/resume/" class="btn btn-link" role="button">resume</a>
+                  	{% endif %}
+		  			<a href="/campaigns/{{ cp.id }}/drop/" class="btn btn-link" role="button">delete</a>
+		  		  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+{% endblock %}
+{% block navbar_collapse %}
+<li><a href="/login">Logout ({{ current_user }})</a></li>
+{% endblock %}

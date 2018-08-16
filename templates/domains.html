@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+
+{% block app_container %}
+	<div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li class="active"><a href="/campaigns">Campaigns</a></li>
+            <li><a href="/settings">Settings</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">{{ current_campaign }}</h1>
+          <div class="tabs_container">
+	          <a href="/campaigns/{{ current_campaign.pk }}/domains/" class="btn btn-link" disabled="disabled" role="button">Domains</a>
+			  <a href="/campaigns/{{ current_campaign.pk }}/server/" class="btn btn-link" role="button">Server</a>
+		  </div>
+		  <form action="/campaigns/{{ current_campaign.pk }}/domains/" method="POST">{% csrf_token %}
+	  	  	<button class="btn btn-primary"" type="submit">Add domain</button>
+	      </form>
+          {% if domains %}
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>name</th>
+                  <th>status</th>
+                  <th>actions</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for d in domains %}
+                <tr>
+                  <td>{{ d.name }}</td>
+                  <td>
+                  {% if d.is_used %}
+                  already used
+                  {% else %}
+	                  {% if d.is_active %}
+	                  running
+	                  {% else %}
+	                  standby
+	                  {% endif %}
+                  {% endif %}
+                  </td>
+                  <td>
+                  {% if not d.is_used %}
+                    {% if d.is_active %}
+                  	<a href="/domains/{{ d.pk }}/pause/" class="btn btn-link" role="button">pause</a>
+                  	{% else %}
+                  	<a href="/domains/{{ d.pk }}/resume/" class="btn btn-link" role="button">run</a>
+                  	{% endif %}
+		  		  {% endif %}
+		  		    <a href="/domains/{{ d.pk }}/drop/" class="btn btn-link" role="button">delete</a>
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+{% endblock %}
+{% block navbar_collapse %}
+<li><a href="/login">Logout ({{ current_user }})</a></li>
+{% endblock %}

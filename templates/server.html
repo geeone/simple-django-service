@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+
+{% block app_container %}
+	<div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li class="active"><a href="/campaigns">Campaigns</a></li>
+            <li><a href="/settings">Settings</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">{{ current_campaign }}</h1>
+          <a href="/campaigns/{{ current_campaign.pk }}/domains/" class="btn btn-link" role="button">Domains</a>
+		  <a href="/campaigns/{{ current_campaign.pk }}/server/" class="btn btn-link" disabled="disabled" role="button">Server</a>
+		  <h3 class="sub-header">Server</h3>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <tbody>
+                <tr>
+                  <td>name: {{ server_info.name }}</td>
+                </tr>
+                <tr>
+                  <td>host: {{ server_info.server_ip }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h3 class="sub-header">Edit server details</h3>
+          <form action="/campaigns/{{ current_campaign.pk }}/server/save_settings/" method="POST">{% csrf_token %}
+              <input type="hidden" name="current_server" value="{{ server_info.pk }}">
+	          <div class="table-responsive">
+	            <table class="table table-striped">
+	              <tbody>
+	                <tr>
+	                  <td>name</td>
+	                  <td><input type="text" name="server_name" size="20" required></td>
+	                </tr>
+	                <tr>
+	                  <td>host</td>
+	                  <td><input type="text" name="server_ip" size="20" required></td>
+	                </tr>
+	                <tr>
+	                  <td>password</td>
+	                  <td><input type="password" name="server_psswrd" size="20" required></td>
+	                </tr>
+	              </tbody>
+	            </table>
+	          </div>
+	          <button class="btn btn-primary" type="submit">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+{% block navbar_collapse %}
+<li><a href="/login">Logout ({{ current_user }})</a></li>
+{% endblock %}
