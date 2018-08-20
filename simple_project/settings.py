@@ -79,9 +79,9 @@ WSGI_APPLICATION = 'simple_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'simple_db',
-        'USER': 'root',
-        'PASSWORD': 'B3zVsOu9',
+        'NAME': 'your_database',
+        'USER': 'your_user',
+        'PASSWORD': 'your_password',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
